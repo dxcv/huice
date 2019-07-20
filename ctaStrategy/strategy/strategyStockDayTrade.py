@@ -93,7 +93,7 @@ class StockDayTradeStrategy(CtaTemplate):
 
         self.last_price = tick.lastPrice
         minus = self.minus
-        iftradetime = int(tick.time) > 93200 and int(tick.time) < 145700
+        iftradetime = int(tick.time) > 93200 and int(tick.time) < 145500
         bid_volumn = (tick.bidVolume1, tick.bidVolume2, tick.bidVolume3, tick.bidVolume4, tick.bidVolume5)
         bid_price = (tick.bidPrice1, tick.bidPrice2, tick.bidPrice3, tick.bidPrice4, tick.bidPrice5)
         self.pk_bid = dict(zip(bid_price, bid_volumn))
@@ -115,7 +115,7 @@ class StockDayTradeStrategy(CtaTemplate):
 
             # 当最大盈利值超过固定盈利值，且价格不再创新高后 卖出
             if win_max > self.fixed_long_win:
-                if tick.lastPrice < self.long_moving_win_list[-1]:
+                if tick.bidPrice1 < self.long_moving_win_list[-1]:
                     stop_price = tick.bidPrice1 - 1.0
                     self.sell(stop_price, abs(self.pos), stop=True)
 
@@ -141,18 +141,18 @@ class StockDayTradeStrategy(CtaTemplate):
             if moving_win < win_min:
                 self.short_moving_win_list.append(moving_win)
             if win_min < self.fixed_short_win:
-                if tick.lastPrice > self.short_moving_win_list[-1]:
+                if tick.askPrice1 > self.short_moving_win_list[-1]:
                     stop_price = tick.askPrice1 + 1.0
                     self.cover(stop_price, abs(self.pos), stop=True)
 
             # 固定止损
             if tick.askPrice1 > self.fixed_short_stop:
                 if self.tick_after_open >= self.tick_nums:
-                    self.cover(tick.askPrice2, abs(self.pos), stop=True)
+                    self.cover(tick.askPrice1 + 1.0, abs(self.pos), stop=True)
 
             # 临近午盘若有仓位清仓
             if int(tick.time) > 112945 and int(tick.time) < 112956:
-                self.cover(tick.askPrice2, abs(self.pos), stop=True)
+                self.cover(tick.askPrice1 + 1.0, abs(self.pos), stop=True)
 
         # 股指大涨
         if minus > 6 and iftradetime:
