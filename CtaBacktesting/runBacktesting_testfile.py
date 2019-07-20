@@ -51,7 +51,7 @@ if __name__ == '__main__':
     print("---------------------------------")
     df9 = runBackTesting('600030.SH')
     print("---------------------------------")
-    df10 = runBackTesting('600309.SH')
+    #df10 = runBackTesting('600309.SH')
 
 
 
