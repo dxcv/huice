@@ -1,0 +1,59 @@
+Index: ctaStrategy/strategy/strategyStockDayTrade.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ctaStrategy/strategy/strategyStockDayTrade.py	(date 1563517308484)
++++ ctaStrategy/strategy/strategyStockDayTrade.py	(date 1563517308484)
+@@ -8,8 +8,8 @@
+ 
+     # 策略参数
+     fixed_stop_rate = 0.0014
+-    fixed_win_rate = 0.0014 * 3
+-    spread_rate = 1
++    fixed_win_rate = 0.0055
++    spread_rate = 0.8
+ 
+     # 策略变量
+     last_price = 0
+@@ -31,7 +31,9 @@
+                  'author',
+                  'vtSymbol',
+                  'spread_rate',
+-                 'tick_nums'
++                 'tick_nums',
++                 'fixed_stop_rate',
++                 'fixed_win_rate'
+                  ]
+ 
+     # 变量列表，保存了变量的名称
+@@ -162,8 +164,8 @@
+                     self.cover(stop_price, abs(self.pos), stop=True)
+ 
+             # 固定止损
+-            if tick.askPrice1 > self.fixed_short_stop:
+-                self.cover(tick.askPrice2, abs(self.pos), stop=True)
++            if tick.askPrice1 >= self.fixed_short_stop:
++                self.cover(tick.askPrice2 - 1.0, abs(self.pos), stop=True)
+ 
+             # # 股指反向止损
+             # if minus > 6:
+@@ -179,8 +181,7 @@
+ 
+     # ----------------------------------------------------------------------
+     def onOrder(self, order):
+-        """收到委托变化推送（必须由用户继承实现）"""
+-        pass
++        print(0)
+ 
+     # ----------------------------------------------------------------------
+     def onTrade(self, trade):
+@@ -207,7 +208,7 @@
+ 
+     # ----------------------------------------------------------------------
+     def onStopOrder(self, so):
+-        pass
++        print(0)
+         """停止单推送"""
+ 
+ 
