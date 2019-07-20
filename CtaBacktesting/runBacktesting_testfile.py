@@ -34,7 +34,7 @@ def runBackTesting(symbol):
 if __name__ == '__main__':
 
     df1 = runBackTesting('601888.SH')
-    print("---------------------------------")
+    # print("---------------------------------")
     df2 = runBackTesting('000063.SZ')
     print("---------------------------------")
     df3 = runBackTesting('601318.SH')
